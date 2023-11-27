@@ -4,7 +4,7 @@
             <div class="header">
 
                 <div>
-                    <Button label="NEW POST" class="p-button-raised p-button-success"  icon="pi pi-plus" />
+                    <Button label="NEW POST" class="p-button-raised p-button-success"  icon="pi pi-plus" @click="showAddPostModal" />
                 </div>
                 <div>
                     <InputText type="text" v-model="searchTerm" placeholder="Search Post"></InputText>
@@ -46,24 +46,34 @@
                 </span>
             </div>
 
-
-            <Button label="Show" icon="pi pi-external-link" @click="toggleAddPostModal" />
                 <Dialog header=" NEW POST " :visible.sync="displayAddPostModal" :containerStyle="{width: '50vw'}">
-                    <form @submit.prevent="loginUser()">
-                    <div class="p-field">
-                        <label for="username">Title:</label><br>
-                        <InputText type="text" v-model="formData.title" />
-                    </div>
+                    <form>
+                        <div class="p-field">
+                            <label for="username">Title:</label><br>
+                            <InputText type="text" v-model="formData.title" />
+                        </div>
 
-                    <div class="p-field">
-                        <label for="username">Description:</label><br>
-                        <Textarea v-model="formData.description" rows="5" cols="30" placeholder="Description" />
-                    </div>
+                        <div class="p-field">
+                            <label for="tags">Description:</label><br>
+                            <Textarea v-model="formData.description" rows="5" cols="30" placeholder="Description" />
+                        </div>
+
+                        <div class="p-field">
+                            <label for="tags">Tags:</label><br>
+                            <InputText type="text" v-model="formData.tags" />
+                        </div>
+
+                        <h3>Images</h3>
+                        <FileUpload name="demo[]" url="./upload.php" @upload="onUpload" :multiple="true" accept="image/*" :maxFileSize="1000000">
+                            <template #empty>
+                                <p>Drag and drop images to here to upload.</p>
+                            </template>
+                        </FileUpload>
                     
                     </form>
                     <template #footer>
-                        <Button label="CANCEL" icon="pi pi-times" @click="toggleAddPostModal" class="p-button-text"/>
-                        <Button label="POST" icon="pi pi-check" @click="closeBasic" autofocus />
+                        <Button label="CANCEL" icon="pi pi-times" @click="closeAddPostModal" class="p-button-text"/>
+                        <Button label="POST" icon="pi pi-check" @click="submitForm" autofocus />
                     </template>
                 </Dialog>
 
@@ -80,24 +90,38 @@
     import Card from 'primevue/card'
     import Textarea from 'primevue/textarea';
     import Dialog from 'primevue/dialog';
+    import FileUpload from 'primevue/fileupload';
 
     const posts = ref([])
     const searchTerm = ref('')
     const toggleComments = ref(false)
     const displayAddPostModal = ref(false)
-const formData = ref(
-    {
-        title:'',
-        description:''
-    }
-)
+    const formData = ref(
+        {
+            title:'',
+            description:''
+        }
+    )
     const showComments = ()=>{
         toggleComments.value = true;
     }
 
-    const toggleAddPostModal = ()=>{
-        displayAddPostModal.value = !displayAddPostModal.value;
+    const showAddPostModal = ()=>{
+        displayAddPostModal.value = true;
     }
+
+    const closeAddPostModal = ()=>{
+        displayAddPostModal.value = false;
+    }
+
+    const submitForm =  ()=>{
+
+    }
+
+    const onUpload = () =>{
+
+    }
+
     const getAllPosts = ()=>{
     posts.value= [
         {
@@ -170,5 +194,7 @@ const formData = ref(
     width:100%;
     margin:2%;
   }
-
+  .p-inputtext {
+    width:100%
+  }
 </style>
